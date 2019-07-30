@@ -12,8 +12,11 @@
   },
   "keywords": [],
   "author": "rektide de la faye",
-  "license": "X11",
+  "license": "MIT",
   "dependencies": {
-    "yaeti": "^1.0.1"
+    "yaeti": "^1.0.2"
+  },
+  "devDependencies": {
+    "esm": "^3.2.25"
   }
 }
