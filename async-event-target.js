@@ -1,19 +1,21 @@
-//import EventTarget from "yaeti"
-var EventTarget= require("yaeti").EventTarget
+"use module"
+import { EventTarget} from "yaeti"
 
 const __dispatchEvent= EventTarget.prototype.dispatchEvent
 
-class AsyncEventTarget extends EventTarget{
+class ExtendableEventTarget extends EventTarget{
 	dispatchEvent( evt){
 		var awaiting= []
-		function alsoAwait( promise){
+		function waitUntil( promise){
 			awaiting.push( promise)
 		}
-		evt.alsoAwait= alsoAwait
+		// https://www.w3.org/TR/service-workers-1/#dom-extendableevent-waituntil
+		evt.waitUntil= waitUntil
 		var value= __dispatchEvent.call( this, evt)
 		if( value=== false){
 			return false
 		}
-		return Promise.all(awaiting)
+		return new Promise( res=> setImmediate(()=> res( Promise.all( awaiting))))
 	}
 }
+export default ExtendableEventTarget
